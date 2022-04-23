@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-bank-note-auth-ml-app-deployment
+  namespace: default
+  labels:
+    app: eks-bank-note-auth-ml-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eks-bank-note-auth-ml-app
+  template:
+    metadata:
+      labels:
+        app: eks-bank-note-auth-ml-app
+    spec:
+      #affinity:
+        #nodeAffinity:
+          #requiredDuringSchedulingIgnoredDuringExecution:
+            #nodeSelectorTerms:
+            #- matchExpressions:
+              #- key: kubernetes.io/arch
+                #operator: In
+                #values:
+                #- amd64
+                #- arm64
+      containers:
+      - name: bank-note-auth-ml-app-repo
+        image: 146871189787.dkr.ecr.eu-west-2.amazonaws.com/bank-note-auth-ml-app-repo:latest
+        ports:
+        - containerPort: 8080
+        env:
+         - name: PORT
+           value: "8080"
+        #imagePullPolicy: IfNotPresent
+      #nodeSelector:
+        #kubernetes.io/os: linux
